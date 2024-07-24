@@ -6,7 +6,7 @@ COPY . .
 
 RUN apk add wget
 
-RUN wget https://piston-data.mojang.com/v1/objects/8f3112a1049751cc472ec13e397eade5336ca7ae/server.jar -O server.jar
+RUN wget https://launchermeta.mojang.com/mc/game/version_manifest.json -O version_manifest.json
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
 

@@ -7,9 +7,27 @@ import (
 	"log"
 )
 
+type Latest struct {
+    Release string `json:"release"`
+    Snapshot string `json:"snapshot"`
+}
+
+type Version struct {
+    ID string `json:"id"`
+    Type string `json:"type"`
+    URL string `json:"url"`
+    Time string `json:"time"`
+    ReleaseTime string `json:"releaseTime"`
+}
+
+type VersionManifest struct {
+    Latest Latest `json:"latest"`
+    Versions []Version `json:"versions"`
+}
+
 type ServerProperties struct {
+    Version          string
 	MOTD             string
-	Memory           string
 	Port             string
 	Seed             string
 	GameMode         string
@@ -21,15 +39,15 @@ type ServerProperties struct {
 
 func getEnvVars() ServerProperties {
 	return ServerProperties{
+	    Version:          os.Getenv("Version"),
 		MOTD:             os.Getenv("MOTD"),
-		Memory:           os.Getenv("MEMORY"),
-		Port:             os.Getenv("PORT"),
-		Seed:             os.Getenv("SEED"),
-		GameMode:         os.Getenv("GAMEMODE"),
-		Difficulty:       os.Getenv("DIFFICULTY"),
-		WhiteList:        os.Getenv("WHITELIST"),
-		WhiteListPlayers: os.Getenv("WHITELIST_PLAYERS"),
-		Ops:              os.Getenv("OPS"),
+		Port:             os.Getenv("Port"),
+		Seed:             os.Getenv("Seed"),
+		GameMode:         os.Getenv("GameMode"),
+		Difficulty:       os.Getenv("Difficulty"),
+		WhiteList:        os.Getenv("WhiteList"),
+		WhiteListPlayers: os.Getenv("WhiteListPlayers"),
+		Ops:              os.Getenv("Ops"),
 	}
 }
 
@@ -59,9 +77,9 @@ func createServerPropertiesFile(props ServerProperties) {
     }
 }
 
-func startServer() {
+func startServer(version string) {
     log.Println("Starting server...")
-    cmd := exec.Command("java", "-jar", "server.jar")
+    cmd := exec.Command("java", "-jar", version + ".jar")
     cmd.Stdout = os.Stdout
     cmd.Stderr = os.Stderr
     err := cmd.Run()
@@ -69,18 +87,95 @@ func startServer() {
         log.Fatalf("Server failed to start: %v", err)
     }
 }
+
+func installServerJar(version string) {
+    log.Println("Downloading server.jar...")
+    // Version manifest is in version_manifest.json, read it, find the version, and download the server.jar
+    // Read the version_manifest.json
+    file, err := os.Open("version_manifest.json")
+    if err != nil {
+        log.Fatalf("Error opening version_manifest.json: %v", err)
+    }
+    defer file.Close()
+
+    // Read the file
+    data, err := ioutil.ReadAll(file)
+    if err != nil {
+        log.Fatalf("Error reading version_manifest.json: %v", err)
+    }
+
+    // Parse the JSON
+    var manifest VersionManifest
+    err = json.Unmarshal(data, &manifest)
+    if err != nil {
+        log.Fatalf("Error unmarshalling version_manifest.json: %v", err)
+    }
+
+    // Find the version
+    var versionURL string
+    for _, v := range manifest.Versions {
+        if v.ID == version {
+            versionURL = v.URL
+            break
+        }
+    }
+
+    if versionURL == "" {
+        log.Fatalf("Version %s not found in version_manifest.json", version)
+    }
+
+    // make a request to the version URL
+    resp, err := http.Get(versionURL)
+    if err != nil {
+        log.Fatalf("Error making request to version URL: %v", err)
+    }
+    defer resp.Body.Close()
+
+    // create a file to write the server.jar to
+    file, err = os.Create(version + ".jar")
+    if err != nil {
+        log.Fatalf("Error creating server.jar: %v", err)
+    }
+    defer file.Close()
+
+    // the download the server.jar from body.downloads.server.url
+    var versionData map[string]interface{}
+    err = json.NewDecoder(resp.Body).Decode(&versionData)
+    if err != nil {
+        log.Fatalf("Error decoding version data: %v", err)
+    }
+
+    serverURL := versionData["downloads"].(map[string]interface{})["server"].(map[string]interface{})["url"].(string)
+
+    resp, err = http.Get(serverURL)
+    if err != nil {
+        log.Fatalf("Error making request to server URL: %v", err)
+    }
+    defer resp.Body.Close()
+
+    _, err = io.Copy(file, resp.Body)
+    if err != nil {
+        log.Fatalf("Error copying server.jar: %v", err)
+    }
+
+    log.Println("server.jar downloaded")
+}
+
 func main() {
+    props := getEnvVars()
+    if props.Version == "" {
+        log.Fatalf("Version is required")
+    }
     if _, err := os.Stat("server.properties"); err == nil {
         log.Println("server.properties already exists, skipping creation")
-        startServer()
+        if _, err := os.Stat(props.Version + ".jar"); err == nil {
+            log.Println("server.jar already exists, skipping download")
+            startServer(props.Version)
+        }
         return
     }
-    props := getEnvVars()
     if props.MOTD == "" {
     props.MOTD = "A Minecraft Server"
-    }
-    if props.Memory == "" {
-    props.Memory = "1G"
     }
     if props.Port == "" {
     props.Port = "25565"
@@ -104,5 +199,11 @@ func main() {
     props.Ops = ""
     }
     createServerPropertiesFile(props)
-    startServer()
+    if _, err := os.Stat(props.Version + ".jar"); err == nil {
+        log.Println("server.jar already exists, skipping download")
+        startServer(props.Version)
+    } else {
+        installServerJar(props.Version)
+        startServer(props.Version)
+    }
 }
