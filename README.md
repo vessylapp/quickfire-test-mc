@@ -1,8 +1,8 @@
-# Vessyl QuickFire Test - Minecraft Server 1.12.2
+# Vessyl QuickFire Test - Minecraft Server 1.19.4
 
 ## Description
 
-This is a simple Minecraft server that runs on a Vessyl Instance via QuickFire. It is a vanilla server with no mods. The server is running on Minecraft(1.12.2).
+This is a simple Minecraft server that runs on a Vessyl Instance via QuickFire. It is a vanilla server with no mods. The server is running on Minecraft(1.19.4).
 
 ## How to use?
 
