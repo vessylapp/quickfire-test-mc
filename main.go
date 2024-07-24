@@ -5,6 +5,10 @@ import (
 	"os/exec"
 	"text/template"
 	"log"
+	"io/ioutil"
+	"encoding/json"
+	"net/http"
+	"io"
 )
 
 type Latest struct {
