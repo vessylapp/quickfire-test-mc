@@ -1,19 +1,23 @@
-FROM golang:1.16.3-alpine3.13 as builder
+FROM alpine:latest
 
 WORKDIR /app
 
 COPY . .
 
-RUN go run main.go
-
 RUN apk add wget
 
-RUN wget https://piston-data.mojang.com/v1/objects/450698d1863ab5180c25d7c804ef0fe6369dd1ba/server.jar -O server.jar
+RUN wget https://piston-data.mojang.com/v1/objects/886945bfb2b978778c3a0288fd7fab09d315b25f/server.jar -O server.jar
 
-FROM openjdk:21-jdk
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
 
-WORKDIR /app
+RUN apk add --no-cache ca-certificates && update-ca-certificates
 
-COPY --from=builder /app .
+RUN apk update
 
-CMD ["java", "-jar", "server.jar", "nogui"]
+RUN apk add openjdk21-jre
+
+RUN apk add go
+
+# --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community
+
+CMD ["go", "run", "main.go"]

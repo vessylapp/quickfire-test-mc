@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"os/exec"
 	"text/template"
 	"log"
 )
@@ -58,7 +59,22 @@ func createServerPropertiesFile(props ServerProperties) {
     }
 }
 
+func startServer() {
+    log.Println("Starting server...")
+    cmd := exec.Command("java", "-jar", "server.jar")
+    cmd.Stdout = os.Stdout
+    cmd.Stderr = os.Stderr
+    err := cmd.Run()
+    if err != nil {
+        log.Fatalf("Server failed to start: %v", err)
+    }
+}
 func main() {
+    if _, err := os.Stat("server.properties"); err == nil {
+        log.Println("server.properties already exists, skipping creation")
+        startServer()
+        return
+    }
     props := getEnvVars()
     if props.MOTD == "" {
     props.MOTD = "A Minecraft Server"
@@ -88,4 +104,5 @@ func main() {
     props.Ops = ""
     }
     createServerPropertiesFile(props)
+    startServer()
 }
