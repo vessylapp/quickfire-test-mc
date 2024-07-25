@@ -1,1 +1,12 @@
-["Version","MOTD", "Port", "Seed", "GameMode", "Difficulty", "WhiteList", "WhiteListPlayers", "Ops"]
+{
+  "Version": "Minecraft Version",
+  "MOTD": "Message to display in the server list",
+  "Port": "Port to run the server on",
+  "Seed": "Seed for the world",
+  "GameMode": "Game mode of the world",
+  "Difficulty": "Difficulty of the world",
+  "WhiteList": "Whitelist the server",
+  "WhiteListPlayers": "List of players to whitelist",
+  "Ops": "List of players to op",
+  "Hardcore": "Hardcore mode"
+}

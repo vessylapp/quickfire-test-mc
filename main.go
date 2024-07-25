@@ -39,6 +39,7 @@ type ServerProperties struct {
 	WhiteList        string
 	WhiteListPlayers string
 	Ops              string
+	Hardcore         string
 }
 
 func getEnvVars() ServerProperties {
@@ -52,6 +53,7 @@ func getEnvVars() ServerProperties {
 		WhiteList:        os.Getenv("WhiteList"),
 		WhiteListPlayers: os.Getenv("WhiteListPlayers"),
 		Ops:              os.Getenv("Ops"),
+		Hardcore:         os.Getenv("Hardcore"),
 	}
 }
 
@@ -62,6 +64,7 @@ gamemode={{.GameMode}}
 difficulty={{.Difficulty}}
 white-list={{.WhiteList}}
 ops={{.Ops}}
+hardcore={{.Hardcore}}
 `
 
 func createServerPropertiesFile(props ServerProperties) {
@@ -201,6 +204,9 @@ func main() {
     }
     if props.Ops == "" {
     props.Ops = ""
+    }
+    if props.Hardcore == "" {
+    props.Hardcore = "false"
     }
     createServerPropertiesFile(props)
     if _, err := os.Stat(props.Version + ".jar"); err == nil {

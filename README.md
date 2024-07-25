@@ -19,3 +19,4 @@ Set environment variables in the Vessyl dashboard and deploy the server. The ser
 - `WhiteList`: Set this to `true` if you want to enable the whitelist. Default is `false`.
 - `WhiteListPlayers`: Set this to a comma separated list of players you want to whitelist. Default is `''`.
 - `Ops`: Set this to a comma separated list of players you want to op. Default is `''`.
+- `Hardcore`: Set this to `true` if you want to enable hardcore mode. Default is `false`.
