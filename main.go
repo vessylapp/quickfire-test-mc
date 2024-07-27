@@ -53,6 +53,7 @@ func getEnvVars() ServerProperties {
 		Rcon:             os.Getenv("Rcon"),
 		RconPassword:     os.Getenv("RconPassword"),
 		RconPort:         os.Getenv("RconPort"),
+		MaxPlayers:       os.Getenv("MaxPlayers"),
 	}
 }
 
@@ -64,6 +65,7 @@ hardcore={{.Hardcore}}
 enable-rcon={{.Rcon}}
 rcon.password={{.RconPassword}}
 rcon.port={{.RconPort}}
+max-players={{.MaxPlayers}}
 `
 
 func createServerPropertiesFile(props ServerProperties) {
@@ -203,6 +205,9 @@ func main() {
     }
     if props.RconPort == "" {
     props.RconPort = "25575"
+    }
+    if props.MaxPlayers == "" {
+    props.MaxPlayers = "20"
     }
     createServerPropertiesFile(props)
     if _, err := os.Stat(props.Version + ".jar"); err == nil {

@@ -19,3 +19,4 @@ Set environment variables in the Vessyl dashboard and deploy the server. The ser
 - `Rcon`: Set this to `true` if you want to enable RCON. Default is `false`.
 - `RconPassword`: Set this to the password you want to use for RCON. Default is `password`.
 - `RconPort`: Set this to the port you want to use for RCON. Default is `25575`.
+- `MaxPlayers`: Set this to the maximum number of players you want to allow. Default is `20`.

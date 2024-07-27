@@ -7,5 +7,6 @@
   "Hardcore": "Hardcore mode",
   "Rcon": "Enable Rcon",
   "RconPassword": "Rcon password",
-  "RconPort": "Rcon port"
+  "RconPort": "Rcon port",
+  "MaxPlayers": "Max players"
 }
