@@ -14,9 +14,8 @@ Set environment variables in the Vessyl dashboard and deploy the server. The ser
 - `MOTD`: Set this to the message of the day you want to display. Default is `Welcome to the Vessyl Minecraft Server!`.
 - `Port`: Set this to the port you want to run the server on. Default is `25565`.
 - `Seed`: Set this to the seed you want to use for the world. Default is `0`.
-- `GameMode`: Set this to the gamemode you want to use. Default is `survival`.
-- `Difficulty`: Set this to the difficulty level you want to use. Default is `normal`.
 - `WhiteList`: Set this to `true` if you want to enable the whitelist. Default is `false`.
-- `WhiteListPlayers`: Set this to a comma separated list of players you want to whitelist. Default is `''`.
-- `Ops`: Set this to a comma separated list of players you want to op. Default is `''`.
 - `Hardcore`: Set this to `true` if you want to enable hardcore mode. Default is `false`.
+- `Rcon`: Set this to `true` if you want to enable RCON. Default is `false`.
+- `RconPassword`: Set this to the password you want to use for RCON. Default is `password`.
+- `RconPort`: Set this to the port you want to use for RCON. Default is `25575`.

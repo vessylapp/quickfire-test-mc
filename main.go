@@ -48,23 +48,22 @@ func getEnvVars() ServerProperties {
 		MOTD:             os.Getenv("MOTD"),
 		Port:             os.Getenv("Port"),
 		Seed:             os.Getenv("Seed"),
-		GameMode:         os.Getenv("GameMode"),
-		Difficulty:       os.Getenv("Difficulty"),
 		WhiteList:        os.Getenv("WhiteList"),
-		WhiteListPlayers: os.Getenv("WhiteListPlayers"),
-		Ops:              os.Getenv("Ops"),
 		Hardcore:         os.Getenv("Hardcore"),
+		Rcon:             os.Getenv("Rcon"),
+		RconPassword:     os.Getenv("RconPassword"),
+		RconPort:         os.Getenv("RconPort"),
 	}
 }
 
 const serverPropertiesTemplate = `motd={{.MOTD}}
 server-port={{.Port}}
 level-seed={{.Seed}}
-gamemode={{.GameMode}}
-difficulty={{.Difficulty}}
 white-list={{.WhiteList}}
-ops={{.Ops}}
 hardcore={{.Hardcore}}
+enable-rcon={{.Rcon}}
+rcon.password={{.RconPassword}}
+rcon.port={{.RconPort}}
 `
 
 func createServerPropertiesFile(props ServerProperties) {
@@ -190,23 +189,20 @@ func main() {
     if props.Seed == "" {
     props.Seed = ""
     }
-    if props.GameMode == "" {
-    props.GameMode = "survival"
-    }
-    if props.Difficulty == "" {
-    props.Difficulty = "easy"
-    }
     if props.WhiteList == "" {
     props.WhiteList = "false"
     }
-    if props.WhiteListPlayers == "" {
-    props.WhiteListPlayers = ""
-    }
-    if props.Ops == "" {
-    props.Ops = ""
-    }
     if props.Hardcore == "" {
     props.Hardcore = "false"
+    }
+    if props.Rcon == "" {
+    props.Rcon = "false"
+    }
+    if props.RconPassword == "" {
+    props.RconPassword = "password"
+    }
+    if props.RconPort == "" {
+    props.RconPort = "25575"
     }
     createServerPropertiesFile(props)
     if _, err := os.Stat(props.Version + ".jar"); err == nil {
