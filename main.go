@@ -34,12 +34,12 @@ type ServerProperties struct {
 	MOTD             string
 	Port             string
 	Seed             string
-	GameMode         string
-	Difficulty       string
 	WhiteList        string
-	WhiteListPlayers string
-	Ops              string
 	Hardcore         string
+	Rcon             string
+	RconPassword     string
+	RconPort         string
+	MaxPlayers       string
 }
 
 func getEnvVars() ServerProperties {
