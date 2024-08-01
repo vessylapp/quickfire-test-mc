@@ -2,7 +2,7 @@
 
 ## Example Run Command
 
-`docker run --restart always -d -e Version=1.18.2 -e MOTD="My Minecraft Server" -e Rcon=true -e RconPassword="Password" -e MaxPlayers=5 image_name:tag`
+`docker run --restart always -d -p 25565:25565 -p 25575:25575 -e Version=1.18.2 -e MOTD="My Minecraft Server" -e Rcon=true -e RconPassword="Password" -e MaxPlayers=5 image_name:tag`
 
 ## Description
 
