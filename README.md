@@ -1,5 +1,9 @@
 # Vessyl QuickFire Test - Minecraft Server
 
+## Example Run Command
+
+`docker run --restart always -d -e Version=1.18.2 -e MOTD="My Minecraft Server" -e Rcon=true -e RconPassword="Password" -e MaxPlayers=5 image_name:tag`
+
 ## Description
 
 This is a simple Minecraft server that runs on a Vessyl Instance via QuickFire. It is a vanilla server with no mods.
