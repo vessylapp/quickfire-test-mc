@@ -15,7 +15,7 @@ Set environment variables in the Vessyl dashboard and deploy the server. The ser
 ## Environment Variables
 
 - `Version`: Set this to the version of Minecraft you want to run.
-- `MOTD`: Set this to the message of the day you want to display. Default is `Welcome to the Vessyl Minecraft Server!`.
+- `MOTD`: Set this to the message of the day you want to display. Default is `A Minecraft Server`.
 - `Port`: Set this to the port you want to run the server on. Default is `25565`.
 - `Seed`: Set this to the seed you want to use for the world. Default is `0`.
 - `WhiteList`: Set this to `true` if you want to enable the whitelist. Default is `false`.
